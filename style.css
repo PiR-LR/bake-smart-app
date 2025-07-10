@@ -1,0 +1,713 @@
+/* ==========================================================================
+   STYLES GÉNÉRAUX DU SITE (Header, Menu, Animations)
+   ========================================================================== */
+
+/* Masquage et affichage des éléments */
+.hidden {
+    display: none; /* Masque complètement les éléments */
+}
+.show {
+    display: block; /* Rétablit l'affichage pour les sections visibles */
+}
+
+/* Corps de la page */
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    background-color: #f9f9f9;
+}
+
+/* Header */
+header {
+    background-color: #ffcc00; /* Couleur vive liée au thème boulanger */
+    font-family: 'Pacifico', cursive; /* Typographie inspirante */
+    color: #37474f;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+}
+
+header h1 {
+    font-size: 48px;
+    margin: 0;
+    animation: slideIn 1s ease-out; /* Animation pour une entrée fluide */
+    position: relative; /* Nécessaire pour le déplacement vertical */
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%); /* Départ hors écran */
+        opacity: 0; /* Invisible au début */
+    }
+    to {
+        transform: translateY(0); /* Retour à sa position normale */
+        opacity: 1; /* Complètement visible */
+    }
+}
+
+header p, header button {
+    animation: fadeIn 1s ease-out; /* Animation fluide */
+    position: relative; /* Nécessaire pour le déplacement */
+    animation-delay: 0s; /* Délai pour que le titre apparaisse en premier */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Invisibles au départ */
+        transform: translateY(20px); /* Légèrement décalés vers le bas */
+    }
+    to {
+        opacity: 1; /* Entièrement visibles */
+        transform: translateY(0); /* Retour à la position normale */
+    }
+}
+
+header p {
+    font-size: 16px;
+    margin: 5px 0 0;
+}
+
+header button {
+    background: none;
+    border: none;
+    font-size: 36px; /* Augmente la taille de la flèche */
+    color: #37474f;
+    cursor: pointer;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    display: none;
+}
+
+header button:not(.hidden) {
+    display: block;
+}
+
+header button i:hover {
+    transform: scale(1.5); /* Légèrement plus grande au survol */
+    color: #6200ea; /* Change de couleur au survol */
+    transition: transform 0.3s ease, color 0.3s ease; /* Animation fluide */
+}
+
+/* Menu horizontal */
+.menu-horizontal {
+    display: flex;
+    justify-content: space-around;
+    background-color: #ffffff;
+    padding: 10px 0;
+    margin: 0;
+    list-style: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Icônes du menu */
+.tool-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.tool-icon:hover {
+    transform: scale(1.1);
+    background-color: #f1f1f1;
+}
+
+.tool-icon i {
+    font-size: 32px;
+    color: #ffcc00;
+}
+
+.tool-icon span {
+    font-size: 14px;
+    color: #37474f;
+    margin-top: 5px;
+}
+
+/* Animation de fondu */
+.fade-in {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Transition fluide */
+}
+
+.fade-in.visible {
+    opacity: 1; /* Devient visible */
+    transform: translateY(0); /* Position initiale */
+    display: block; /* S'assure que l'élément est visible */
+}
+
+/* ==========================================================================
+   STYLES SPÉCIFIQUES À L'OUTIL 1 (Calculateur d'hydratation)
+   ========================================================================== */
+
+/* Conteneur principal de l'outil 1 */
+#outil1 .main-container {
+    display: flex;
+    justify-content: center; /* Centre l'ensemble des éléments */
+    gap: 20px; /* Espace entre les ingrédients et le résultat */
+    width: 100%; /* Utilise toute la largeur disponible */
+    max-width: 1200px; /* Limite la largeur pour un design cohérent */
+    margin: 20px auto; /* Centre horizontalement et ajoute une marge en haut */
+    box-sizing: border-box;
+}
+
+/* Conteneur des ingrédients (Outil 1) */
+#outil1 .container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1; /* Assure que l'espace est partagé avec le résultat */
+    box-sizing: border-box;
+}
+
+/* Conteneur des résultats (Outil 1) */
+#outil1 .result-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1; /* Partage l'espace avec les ingrédients */
+    box-sizing: border-box;
+    text-align: center; /* Centre le texte */
+}
+
+/* Résultat - Taux d'hydratation en gras (Outil 1) */
+#outil1 #resultat {
+    font-size: 20px;
+    color: #6200ea;
+    margin-bottom: 10px;
+    font-weight: bold; /* Met en gras le taux d'hydratation */
+    text-align: center; /* Centre uniquement cette ligne */
+}
+
+/* Résultat - Liste des détails (Outil 1) */
+#outil1 #details p {
+    font-size: 14px;
+    color: #37474f;
+    margin: 8px 0;
+    display: flex; /* Garde le texte sur une seule ligne */
+    justify-content: center; /* Centre horizontalement les lignes */
+    align-items: center; /* Centre verticalement */
+}
+
+/* Champs d'ingrédients (s'applique aux deux outils pour l'instant) */
+input[type="number"] {
+    width: 150px; /* Taille légèrement plus grande */
+    text-align: right; /* Alignement du texte à droite */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #37474f;
+    background-color: #fff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="number"]:hover, input[type="number"]:focus {
+    cursor: text; /* Pointeur de saisie activé */
+    border-color: #6200ea;
+    box-shadow: 0 0 5px rgba(98, 0, 234, 0.5);
+    outline: none;
+}
+
+/* Liste déroulante (Outil 1) */
+#outil1 select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #37474f;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#outil1 select:focus {
+    border-color: #6200ea;
+    box-shadow: 0 0 5px rgba(98, 0, 234, 0.5);
+    outline: none;
+}
+
+#outil1 select:hover {
+    background-color: #f1f1f1;
+}
+
+/* Bouton Calculer (Outil 1) */
+#outil1 .container-bouton {
+    display: flex; /* Active Flexbox */
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    height: 100px; /* Donne une hauteur au conteneur */
+}
+
+#outil1 button[type="button"] {
+    width: 150px; /* Largeur du bouton */
+    height: 50px; /* Hauteur */
+    font-size: 18px; /* Taille du texte */
+    font-weight: bold;
+    background-color: #6200ea; /* Couleur de fond */
+    color: white; /* Texte blanc */
+    border: none;
+    border-radius: 8px; /* Coins arrondis */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+#outil1 button[type="button"]:hover {
+    background-color: #3700b3; /* Couleur plus sombre au survol */
+    transform: scale(1.05); /* Effet léger de zoom */
+}
+
+#outil1 button[type="button"]:active {
+    transform: translateY(2px); /* Simule un bouton enfoncé */
+}
+
+#outil1 button[type="button"]:hover {
+    background-color: #3700b3; /* Couleur plus sombre au survol */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Accentuation de l'ombre */
+}
+
+#outil1 button[type="button"]:active {
+    background-color: #3700b3; /* Même couleur que le survol */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Ombre légère lors du clic */
+    transform: translateY(1px); /* Simule un bouton enfoncé */
+}
+
+#outil1 button[type="button"]:focus {
+    outline: none; /* Supprime le contour par défaut */
+    box-shadow: 0 0 8px rgba(98, 0, 234, 0.5); /* Effet lumineux au focus */
+}
+
+/* Formulaire des ingrédients (Outil 1) */
+#outil1 .form-row {
+    display: flex;
+    justify-content: space-between; /* Sépare le texte et le champ */
+    align-items: center; /* Aligne verticalement au centre */
+    margin-bottom: 15px; /* Espacement entre les lignes */
+}
+
+#outil1 label {
+    flex: 1; /* Permet au texte de prendre tout l'espace disponible */
+    text-align: left; /* Assure un alignement à gauche du texte */
+}
+
+/* Ajout/Suppression des ingrédients (Outil 1) */
+#outil1 .add-ingredient-btn, #outil1 .remove-ingredient-btn {
+    margin: 5px auto;
+    display: flex; /* Utilise Flexbox pour centrer */
+    justify-content: center; /* Centre horizontalement */
+    align-items: center; /* Centre verticalement */
+    width: 50px; /* Largeur du bouton */
+    height: 50px; /* Hauteur du bouton */
+    font-size: 24px; /* Taille de l'icône */
+    background-color: #03dac6; /* Couleur vive */
+    color: white; /* Couleur du texte */
+    border: none; /* Supprime les bordures */
+    border-radius: 50%; /* Bouton rond */
+    cursor: pointer; /* Curseur clic activé */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#outil1 .add-ingredient-btn:hover, #outil1 .remove-ingredient-btn:hover {
+    background-color: #018786; /* Couleur au survol */
+    transform: scale(1.1); /* Effet de zoom au survol */
+}
+
+/* Style pour les ingrédients ajoutés dynamiquement (Outil 1) */
+#outil1 .new-ingredient {
+    /* Styles spécifiques pour les ingrédients ajoutés */
+    margin-top: 5px; /* Ajouter un peu d'espace au-dessus */
+}
+
+/* Style pour le conteneur du graphique (Outil 1) */
+#outil1 #chartResult {
+    max-width: 100%; /* Rendre le graphique responsive dans son conteneur */
+    height: auto; /* Conserver les proportions */
+    margin: 10px auto; /* Centrer horizontalement */
+    display: block; /* Supprimer l'espace supplémentaire en bas */
+}
+
+/* Style pour le message d'erreur (Outil 1) */
+#outil1 #resultat.error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center; /* Centrer le message d'erreur */
+}
+
+/* ==========================================================================
+    STYLES SPÉCIFIQUES À L'OUTIL 2 (Calculateur de recette)
+    ========================================================================== */
+
+/* Conteneur principal de l'outil 2 */
+#outil2 .main-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 80%;
+    max-width: 1200px;
+    margin: 20px auto;
+    box-sizing: border-box;
+}
+
+/* Section gauche (Outil 2) */
+#outil2 .left-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Bloc "Rendement souhaité" (Outil 2) */
+#outil2 #desired-weight-container.desired-weight {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+#outil2 .desired-weight label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    color: #37474f;
+}
+
+#outil2 .desired-weight input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: calc(100% - 20px);
+    font-family: 'Montserrat', sans-serif;
+    color: #37474f;
+}
+
+#outil2 .desired-weight button {
+    margin-top: 10px;
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#outil2 .desired-weight button:hover {
+    background-color: #3700b3;
+}
+
+/* Liste des ingrédients (Outil 2) */
+#outil2 .ingredients-section {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+#outil2 .ingredients-section h2 {
+    font-size: 1.5em;
+    margin-top: 0;
+    font-family: 'Montserrat', sans-serif;
+    color: #6200ea;
+}
+
+#outil2 .ingredient-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+#outil2 .ingredient-row input[type="text"] {
+    flex-grow: 2;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    color: #37474f;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#outil2 .ingredient-row input[type="number"] {
+    flex-grow: 1;
+    max-width: 100px;
+    font-family: 'Montserrat', sans-serif;
+    color: #37474f;
+}
+
+#outil2 .ingredient-row .remove-ingredient {
+    background: none;
+    border: none;
+    color: #ff5722;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 5px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+#outil2 .ingredient-row .remove-ingredient:hover {
+    transform: scale(1.2);
+}
+
+#outil2 #add-ingredient-tool2.add-ingredient-btn {
+    align-self: flex-end;
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 36px;
+}
+
+/* Section droite (Outil 2) */
+#outil2 .right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Conteneur des résultats (Outil 2) */
+#outil2 .result-container {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#outil2 .result-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Résultats de la recette (Outil 2) */
+#outil2 .results-section h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    color: #6200ea;
+}
+
+/* Conteneur des résultats de la recette */
+#outil2 #recipe-results {
+    display: flex; /* Utilisation de flexbox pour aligner les conteneurs côte à côte */
+    justify-content: space-around; /* Espacement égal entre les conteneurs */
+    width: 100%; /* S'assurer qu'il prend toute la largeur disponible */
+}
+
+/* Conteneurs des ingrédients originaux et des quantités recalculées */
+#outil2 #original-ingredients,
+#outil2 #recalculated-quantities {
+    flex: 1; /* Permet aux conteneurs de prendre une part égale de l'espace disponible */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box; /* S'assurer que le padding et la bordure sont inclus dans la largeur/hauteur */
+}
+
+/* Titres des conteneurs des ingrédients et quantités */
+#outil2 #original-ingredients h4,
+#outil2 #recalculated-quantities h4 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #6200ea; /* Couleur violette pour les titres */
+}
+
+/* Liste des ingrédients et quantités */
+#outil2 .outil2-results-list {
+    list-style: none; /* Supprimer les puces */
+    padding: 0;
+}
+
+/* Éléments de la liste des ingrédients et quantités */
+#outil2 .outil2-results-list li {
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    color: #37474f; /* Couleur grise pour le texte */
+    margin-bottom: 5px; /* Espacement entre les éléments */
+}
+
+/* ==========================================================================
+   STYLES SPÉCIFIQUES À L'OUTIL 3 
+   ========================================================================== */
+
+.bleu {
+    background-color: blue;
+}
+
+.jaune {
+    background-color: yellow;
+}
+
+.rouge {
+    background-color: red;
+}
+
+/* ==========================================================================
+    STYLES SPÉCIFIQUES À L'OUTIL 4 (Calcul du coût de recette)
+    ========================================================================== */
+
+/* Conteneur principal de l'outil 4 */
+#outil4 .main-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    box-sizing: border-box;
+}
+
+/* Conteneur des ingrédients (Outil 4) */
+#outil4 .container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1;
+    box-sizing: border-box;
+}
+
+/* Conteneur des résultats (Outil 4) */
+#outil4 .result-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex: 1;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Résultats (Outil 4) */
+#outil4 #cost-results p {
+    font-size: 16px;
+    color: #37474f;
+    margin: 8px 0;
+}
+
+/* Bouton Calculer (Outil 4) */
+#outil4 #calculate-cost {
+    width: 150px;
+    height: 50px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px;
+}
+
+#outil4 #calculate-cost:hover {
+    background-color: #3700b3;
+    transform: scale(1.05);
+}
+
+#outil4 #calculate-cost:active {
+    transform: translateY(2px);
+}
+
+#outil4 #calculate-cost:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(98, 0, 234, 0.5);
+}
+
+/* Ajout/Suppression des ingrédients (Outil 4) */
+#outil4 .remove-ingredient {
+    background: none;
+    border: none;
+    color: #ff5722;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 5px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+#outil4 .remove-ingredient:hover {
+    transform: scale(1.2);
+}
+
+#outil4 #add-ingredient {
+    margin: 5px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    background-color: #03dac6;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#outil4 #add-ingredient:hover {
+    background-color: #018786;
+    transform: scale(1.1);
+}
+/* Style pour le bouton d'installation PWA */
+.install-button {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    background: linear-gradient(45deg, #8B4513, #A0522D) !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 16px !important;
+    border-radius: 25px !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.4) !important;
+    z-index: 1000 !important;
+    transition: all 0.3s ease !important;
+    animation: pulse 2s infinite !important;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.install-button:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 16px rgba(139, 69, 19, 0.6) !important;
+}
