@@ -1,98 +1,79 @@
+// Fichier : outil4.js
+
 document.addEventListener('DOMContentLoaded', () => {
-    const addIngredientBtn = document.getElementById("add-ingredient");
-    const calculateCostBtn = document.getElementById("calculate-cost");
-    const ingredientsContainer = document.getElementById("ingredients-input");
+    const addIngredientBtn = document.getElementById('add-ingredient-tool4');
+    const ingredientsListDiv = document.getElementById('ingredients-list');
+    const calculateCostBtn = document.getElementById('calculate-cost');
+    const pieceWeightInput = document.getElementById('piece-weight');
+    
+    // Les spans pour afficher les résultats
+    const totalWeightSpan = document.getElementById('total-weight');
+    const totalCostSpan = document.getElementById('total-cost');
+    const pieceCostSpan = document.getElementById('piece-cost');
 
-    addIngredientBtn.addEventListener("click", addIngredientRow);
-    calculateCostBtn.addEventListener("click", calculateRecipeCost);
-
-    function addIngredientRow() {
-        const ingredientRow = document.createElement("div");
-        ingredientRow.classList.add("ingredient-row");
-        ingredientRow.innerHTML = `
-            <input type="text" class="ingredient-name" placeholder="Nom de l'ingrédient">
-            <input type="number" class="ingredient-quantity" placeholder="Quantité (g)" value="0">
-            <input type="number" class="ingredient-price" placeholder="Prix au kg (€)" value="0">
-            <button type="button" class="remove-ingredient">✖</button>
-        `;
-        
-        const removeBtn = ingredientRow.querySelector('.remove-ingredient');
-        removeBtn.addEventListener('click', () => ingredientRow.remove());
-
-        // Insérer juste avant le bouton "Ajouter un ingrédient"
-        addIngredientBtn.parentNode.insertBefore(ingredientRow, addIngredientBtn);
+    // --- Ajout d'un ingrédient ---
+    if (addIngredientBtn) {
+        addIngredientBtn.addEventListener('click', () => {
+            const ingredientId = Date.now(); // ID unique pour chaque ligne
+            const newIngredientHTML = `
+                <div class="ingredient-row" id="row-${ingredientId}">
+                    <input type="text" class="form-input ingredient-name" placeholder="Nom ingrédient">
+                    <input type="number" class="form-input ingredient-weight" placeholder="Poids (g)">
+                    <input type="number" class="form-input ingredient-price" placeholder="Prix (€/kg)">
+                    <button type="button" class="remove-ingredient" data-id="${ingredientId}" title="Supprimer">
+                        <i class="material-icons">close</i> 
+                    </button>
+                </div>
+            `;
+            ingredientsListDiv.insertAdjacentHTML('beforeend', newIngredientHTML);
+        });
     }
 
-    function calculateRecipeCost() {
-        const ingredientRows = ingredientsContainer.querySelectorAll(".ingredient-row");
-        const pieceWeightInput = document.getElementById("piece-weight");
-        
-        // Vérification que les éléments existent
-        if (!ingredientRows.length || !pieceWeightInput) {
-            alert("Veuillez ajouter des ingrédients et un poids par pièce.");
-            return;
-        }
-
-        let totalCost = 0;
-        let totalWeight = 0;
-
-        // Validation avant calcul
-        const isValidInput = validateAllInputs(ingredientRows, pieceWeightInput);
-        
-        if (!isValidInput) {
-            alert("Veuillez vérifier vos saisies.");
-            return;
-        }
-
-        ingredientRows.forEach(row => {
-            const quantityInput = row.querySelector(".ingredient-quantity");
-            const priceInput = row.querySelector(".ingredient-price");
-
-            if (quantityInput && priceInput) {
-                const quantity = parseFloat(quantityInput.value || '0');
-                const price = parseFloat(priceInput.value || '0');
-                
-                if (!isNaN(quantity) && !isNaN(price)) {
-                    totalCost += (quantity / 1000) * price;
-                    totalWeight += quantity;
+    // --- Suppression d'un ingrédient (avec délégation d'événement) ---
+    if (ingredientsListDiv) {
+        ingredientsListDiv.addEventListener('click', (e) => {
+            // SEULE MODIFICATION ICI : On vérifie si le clic était sur un bouton avec la classe 'remove-ingredient'
+            // ET on utilise .closest() pour gérer le clic sur l'icône à l'intérieur du bouton
+            if (e.target && e.target.closest('.remove-ingredient')) {
+                const button = e.target.closest('.remove-ingredient'); // Récupère le bouton parent
+                const ingredientId = button.getAttribute('data-id');
+                const rowToRemove = document.getElementById(`row-${ingredientId}`);
+                if (rowToRemove) {
+                    rowToRemove.remove();
                 }
             }
         });
-
-        const pieceWeight = parseFloat(pieceWeightInput.value || '0');
-        const pieceCost = totalWeight > 0 ? totalCost / (totalWeight / pieceWeight) : 0;
-
-        updateResults(totalWeight, totalCost, pieceCost);
     }
 
-    function validateAllInputs(ingredientRows, pieceWeightInput) {
-        // Validation des ingrédients
-        const ingredientsValid = Array.from(ingredientRows).every(row => {
-            const nameInput = row.querySelector(".ingredient-name");
-            const quantityInput = row.querySelector(".ingredient-quantity");
-            const priceInput = row.querySelector(".ingredient-price");
+    // --- Calcul du coût de revient ---
+    if (calculateCostBtn) {
+        calculateCostBtn.addEventListener('click', () => {
+            // PAS DE MODIFICATION ICI : On garde .ingredient-row pour le querySelectorAll
+            const ingredientRows = ingredientsListDiv.querySelectorAll('.ingredient-row'); 
+            let totalRecipeWeight = 0;
+            let totalRecipeCost = 0;
 
-            const name = (nameInput.value || '').trim();
-            const quantity = parseFloat(quantityInput.value || '0');
-            const price = parseFloat(priceInput.value || '0');
+            ingredientRows.forEach(row => {
+                const weight = parseFloat(row.querySelector('.ingredient-weight').value);
+                const pricePerKg = parseFloat(row.querySelector('.ingredient-price').value);
 
-            return name !== '' && 
-                   !isNaN(quantity) && 
-                   quantity >= 0 &&
-                   !isNaN(price) && 
-                   price >= 0;
+                if (!isNaN(weight) && !isNaN(pricePerKg)) {
+                    totalRecipeWeight += weight; // Poids en grammes
+                    totalRecipeCost += (weight / 1000) * pricePerKg; // (Poids en kg) * Prix par kg
+                }
+            });
+
+            const pieceWeight = parseFloat(pieceWeightInput.value);
+            let costPerPiece = 0;
+            if (!isNaN(pieceWeight) && pieceWeight > 0 && totalRecipeWeight > 0) {
+                const numPieces = totalRecipeWeight / pieceWeight;
+                costPerPiece = totalRecipeCost / numPieces;
+            }
+
+            // Affichage des résultats
+            totalWeightSpan.textContent = totalRecipeWeight.toFixed(0);
+            totalCostSpan.textContent = totalRecipeCost.toFixed(2);
+            pieceCostSpan.textContent = costPerPiece.toFixed(3); // 3 décimales pour la précision du coût
         });
-
-        // Validation du poids par pièce
-        const pieceWeight = parseFloat(pieceWeightInput.value || '0');
-        const pieceWeightValid = !isNaN(pieceWeight) && pieceWeight > 0;
-
-        return ingredientsValid && pieceWeightValid;
-    }
-
-    function updateResults(totalWeight, totalCost, pieceCost) {
-        document.getElementById("total-weight").textContent = totalWeight.toFixed(2);
-        document.getElementById("total-cost").textContent = totalCost.toFixed(2);
-        document.getElementById("piece-cost").textContent = pieceCost.toFixed(2);
     }
 });

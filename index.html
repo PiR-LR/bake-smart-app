@@ -7,18 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- Ajout PWA -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#8B4513">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Bake Smart">
-<link rel="apple-touch-icon" href="icons/icon-152x152.png">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 
 </head>
 <body>
@@ -28,7 +17,6 @@
         <button id="back-button" class="hidden"><i class="material-icons">arrow_back</i></button>
     </header>
 
-    <!-- Menu horizontal -->
     <nav id="tool-menu" class="menu-horizontal">
         <div class="tool-icon" data-tool="outil1">
             <i class="material-icons">water_drop</i>
@@ -56,218 +44,272 @@
         </div>
     </nav>
 
-    <!-- Contenu principal -->
     <main id="content">
-        <!-- Outil 1 : Calculateur de Taux d'Hydratation -->
-        <section id="outil1" class="tool-content hidden fade-in">
-            <div class="main-container">
-                <div class="container">
-                    <h1>Calculateur de Taux d'hydratation d'une brioche</h1>
-                    <form id="hydration-form">
-                        <div class="form-row">
-                            <label for="farine">Farine (g):</label>
-                            <input type="number" id="farine" required>
-                            <span class="error-message"></span>
-                        </div>
-                        <div class="form-row">
-                            <label for="eau">Eau (g):</label>
-                            <input type="number" id="eau">
-                            <span class="error-message"></span>
-                        </div>
-						<div class="form-row">
-							<label for="oeuf">Œufs entiers (g):</label>
-							<input type="number" id="oeuf">
-							<span class="error-message"></span>
-						</div>
-						<div class="form-row">
-							<label for="jaunes">Jaunes d'œufs (g):</label>
-							<input type="number" id="jaunes">
-							<span class="error-message"></span>
-						</div>
-						<div class="form-row">
-							<label for="blancs">Blancs d'œufs (g):</label>
-							<input type="number" id="blancs">
-							<span class="error-message"></span>
-						</div>
-                        <div class="form-row">
-                            <label for="lait">Lait (g):</label>
-                            <input type="number" id="lait">
-                            <span class="error-message"></span>
-                        </div>
-                        <div class="form-row">
-                            <label for="sel">Sel (g):</label>
-                            <input type="number" id="sel">
-                            <span class="error-message"></span>
-                        </div>
-                        <div class="form-row">
-                            <label for="sucre">Sucre (g):</label>
-                            <input type="number" id="sucre">
-                            <span class="error-message"></span>
-                        </div>
-                        <div class="form-row">
-                            <label for="levure">Levure (g):</label>
-                            <input type="number" id="levure">
-                            <span class="error-message"></span>
-                        </div>
-                        <div class="form-row">
-                            <label for="matiere">Matière grasse :</label>
-                            <select id="matiere">
-                                <option value="0.18">Beurre</option>
-                                <option value="0.22">Mimetic Essentiel</option>
-                                <option value="0.20">Mimetic Primeur</option>
-                            </select>
-                            <input type="number" id="matiere-quantite" placeholder="Quantité (g)">
-                            <span class="error-message"></span>
-                        </div>
-                        <div id="new-ingredients"></div>
-                        <div class="form-row">
-                            <button type="button" id="add-ingredient-tool1" class="add-ingredient-btn"><i class="material-icons">add_circle</i></button>
-                            <button type="button" id="remove-ingredient-tool1" class="remove-ingredient-btn"><i class="material-icons">remove_circle</i></button>
-                        </div>
-                        <div class="container-bouton">
-                            <button type="button" onclick="calculer()">Calculer</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="result-container" id="result-container">
-                    <p id="resultat"></p>
-                    <div id="details"></div>
-                    <canvas id="chartResult" width="400" height="400"></canvas>
-                </div>
-            </div>
-        </section>
 
-
-
-        <!-- Outil 2 : Calcul de recettes -->
-        <section id="outil2" class="tool-content hidden">
-    <div class="main-container">
-        <div class="left-section">
-            <div id="desired-weight-container" class="desired-weight">
-                <label for="desired-weight">Rendement souhaité (en g) :</label>
-                <input type="number" id="desired-weight" placeholder="Par exemple : 8500">
-                <button id="calculate-desired-recipe">Recalculer la recette</button>
-            </div>
-
-            <div id="ingredients-container" class="ingredients-section">
-                <h2>Liste des ingrédients</h2>
-
-                <div class="ingredient-row">
-                    <input type="text" class="ingredient-name" placeholder="Nom" value="Farine">
-                    <input type="number" class="ingredient-quantity" placeholder="Quantité (g)" value="1000">
+<section id="outil1" class="tool-content hidden">
+    <div class="tool-layout">
+        <div class="tool-card">
+            <h1>Calculateur d'Hydratation Avancé</h1>
+            <p>Mise à jour en temps réel. Entrez les poids de vos ingrédients.</p>
+            
+            <form id="hydration-form">
+                
+                <div class="form-section">
+                    <h2>Matières sèches de référence</h2>
+                    <div class="form-row"><label for="tool1-farine">Farine (g)</label><input type="number" class="calc-input" id="tool1-farine" placeholder="1000"></div>
+                    <div class="form-row"><label for="tool1-sel">Sel (g)</label><input type="number" class="calc-input" id="tool1-sel" placeholder="20"></div>
+                    <div class="form-row"><label for="tool1-sucre">Sucre (g)</label><input type="number" class="calc-input" id="tool1-sucre" placeholder="150"></div>
+                    <div class="form-row"><label for="tool1-levure">Levure fraîche (g)</label><input type="number" class="calc-input" id="tool1-levure" placeholder="50"></div>
                 </div>
-                <div class="ingredient-row">
-                    <input type="text" class="ingredient-name" placeholder="Nom" value="Eau">
-                    <input type="number" class="ingredient-quantity" placeholder="Quantité (g)" value="0">
-                </div>
-                <div class="ingredient-row">
-                    <input type="text" class="ingredient-name" placeholder="Nom" value="Sel">
-                    <input type="number" class="ingredient-quantity" placeholder="Quantité (g)" value="0">
-                </div>
-                <div class="ingredient-row">
-                    <input type="text" class="ingredient-name" placeholder="Nom" value="Levure">
-                    <input type="number" class="ingredient-quantity" placeholder="Quantité (g)" value="0">
-                </div>
-            </div>
 
-            <button id="add-ingredient-tool2" class="add-ingredient-btn">➕</button>
+                <div class="form-section">
+                    <h2>Liquides fixes</h2>
+                    <div class="form-row"><label for="tool1-eau">Eau (g)</label><input type="number" class="calc-input" id="tool1-eau" placeholder="300"></div>
+                    <div class="form-row"><label for="tool1-lait">Lait entier (g)</label><input type="number" class="calc-input" id="tool1-lait" placeholder="100"></div>
+                    <div class="form-row"><label for="tool1-oeuf">Oeuf entier (g)</label><input type="number" class="calc-input" id="tool1-oeuf" placeholder="200"></div>
+                    <strong><div class="form-row"><label for="tool1-jaune">Jaunes d'œufs (g)</label><input type="number" class="calc-input" id="tool1-jaune" placeholder="0"></div></strong>
+                    <strong><div class="form-row"><label for="tool1-blanc">Blancs d'œufs (g)</label><input type="number" class="calc-input" id="tool1-blanc" placeholder="0"></div></strong>
+                </div>
+                
+                <div class="form-section">
+                    <h2>Matière Grasse Principale</h2>
+                    <div class="form-row">
+                        <select id="tool1-fat-type" class="calc-input">
+                            <option value="beurre_82">Beurre 82% MG</option>
+                            <option value="mimetic_essentiel">Mimetic Essentiel</option>
+                            <option value="mimetic_primeur">Mimetic Primeur</option>
+                        </select>
+                        <input type="number" class="calc-input" id="tool1-fat-weight" placeholder="450">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Autres Ingrédients Humides</h2>
+                    <div id="dynamic-ingredients-container">
+                        </div>
+                        <button type="button" id="add-ingredient-tool1" class="add-ingredient" title="Ajouter un ingrédient">
+                        <i class="material-icons">add</i> 
+</button>                </div>
+
+            </form>
         </div>
 
-        <div class="result-container right-section fade-in">
-    <h3>Résultats de la recette :</h3>
-    <div id="recipe-results">
-        <div id="original-ingredients">
-            <h4>Ingrédients :</h4>
-            <ul id="original-ingredients-list" class="outil2-results-list">
-            </ul>
+        <div class="tool-card"> <h2>Analyse de l'Hydratation</h2>
+            
+            <div class="result-line">
+                <i class="material-icons">grain</i>
+                <span>Total Matières Sèches</span>
+                <strong id="total-seches-valeur">0 g</strong>
+            </div>
+
+            <div class="result-line">
+                <i class="material-icons">water_drop</i>
+                <span>Total Apports en Eau</span>
+                <strong id="total-eau-valeur">0 g</strong>
+            </div>
+
+            <div class="result-line highlight-result">
+                <i class="material-icons">percent</i>
+                <strong>Taux d'Hydratation Réel</strong>
+                <strong id="taux-hydratation-valeur">0 %</strong>
+            </div>
+
+            <hr>
+            <h3>Détail des Apports en Eau</h3>
+            <div id="resultats-liquides-detail"><p class="placeholder">En attente des données...</p></div>
+            <hr>
+            <div class="charts-container">
+                <div class="chart-wrapper"><h4>Répartition des Liquides</h4><canvas id="chart-liquides"></canvas></div>
+                <div class="chart-wrapper"><h4>Ratio Sec / Liquide</h4><canvas id="chart-ratio"></canvas></div>
+            </div>
+            <div class="calculateur-actions" style="margin-top: 20px; text-align: center;">
+                    <button id="imprimer-recette-outil1" class="btn btn-secondary">
+                        <i class="material-icons">print</i> Imprimer la Fiche Technique
+                </button>
+            </div>
         </div>
-        <div id="recalculated-quantities">
-            <h4>Quantités recalculées :</h4>
-            <ul id="recalculated-quantities-list" class="outil2-results-list">
-            </ul>
+
+
+<template id="dynamic-ingredient-template">
+                <div class="dynamic-row">
+                    <select class="ingredient-select">
+                        <option value="eau">Eau</option>
+                        <option value="lait_entier">Lait Entier</option>
+                        <option value="lait_demi_ecreme">Lait Demi-Écrémé</option>
+                        <option value="creme_35">Crème 35%</option>
+                        <option value="creme_fraiche_30">Crème Fraîche 30%</option>
+                        <option value="huile">Huile</option>
+                        </select>
+                    <input type="number" class="ingredient-poids" placeholder="Poids (g)">
+                     <button class="remove-ingredient" title="Supprimer"><i class="material-icons">close</i></button>
+                </div>
+            </template>
         </div>
-    </div>
-</div>
+</section>
+
+
+<section id="outil2" class="tool-content hidden">
+    <div class="tool-layout"> 
+        <div class="tool-card"> 
+            <div class="tool-header" style="text-align: center; margin-bottom: 20px;">
+                <h2>Calculateur de recettes - Adaptation du rendement</h2>
+                <p>Modifiez le rendement de votre recette en gardant les mêmes proportions</p>
+            </div>
+            <div id="outil2-error-message" class="error-message hidden" role="alert"></div>
+
+            <div class="form-group"> <h3>Rendement souhaité</h3>
+                <div class="form-row">
+                    <label for="desired-weight">Quantité cible (g) :</label>
+                    <input type="number" id="desired-weight" placeholder="Ex: 8500" class="form-input">
+                </div>
+                <button id="calculate-desired-recipe" class="btn btn-primary">Recalculer la recette</button>
+            </div>
+
+            <div class="form-group">
+                <h3>Liste des ingrédients originaux</h3>
+                <div id="ingredients-container">
+                    <div class="ingredient-row">
+                        <div class="ingredient-controls">
+                            <button class="move-up" title="Monter">↑</button>
+                            <button class="move-down" title="Descendre">↓</button>
+                        </div>
+                        <input type="text" class="ingredient-name form-input" placeholder="Nom" value="Farine">
+                        <input type="number" class="ingredient-quantity form-input" placeholder="Quantité (g)" value="1000">
+                        <button class="remove-ingredient" title="Supprimer"><i class="material-icons">close</i></button>
+                    </div>
+                    
+                    <div class="ingredient-row">
+                        <div class="ingredient-controls">
+                            <button class="move-up" title="Monter">↑</button>
+                            <button class="move-down" title="Descendre">↓</button>
+                        </div>
+                        <input type="text" class="ingredient-name form-input" placeholder="Nom" value="Eau">
+                        <input type="number" class="ingredient-quantity form-input" placeholder="Quantité (g)" value="600">
+                        <button class="remove-ingredient" title="Supprimer"><i class="material-icons">close</i></button>
+                    </div>
+                    
+                    <div class="ingredient-row">
+                        <div class="ingredient-controls">
+                            <button class="move-up" title="Monter">↑</button>
+                            <button class="move-down" title="Descendre">↓</button>
+                        </div>
+                        <input type="text" class="ingredient-name form-input" placeholder="Nom" value="Sel">
+                        <input type="number" class="ingredient-quantity form-input" placeholder="Quantité (g)" value="20">
+                        <button class="remove-ingredient" title="Supprimer"><i class="material-icons">close</i></button>
+                    </div>
+                    
+                    <div class="ingredient-row">
+                        <div class="ingredient-controls">
+                            <button class="move-up" title="Monter">↑</button>
+                            <button class="move-down" title="Descendre">↓</button>
+                        </div>
+                        <input type="text" class="ingredient-name form-input" placeholder="Nom" value="Levure">
+                        <input type="number" class="ingredient-quantity form-input" placeholder="Quantité (g)" value="15">
+                        <button class="remove-ingredient" title="Supprimer"><i class="material-icons">close</i></button>
+                    </div>
+                </div>
+                <button type="button" id="add-ingredient-tool2" class="add-ingredient" title="Ajouter un ingrédient"><i class="material-icons">add</i> </button>
+            </div>
+        </div>
+
+        <div class="tool-card"> 
+            <div id="recipe-results" class="result-container hidden">
+                <h3>Résultats de la recette</h3>
+                <div class="results-grid">
+                    <div class="result-column">
+                        <h4>Ingrédients originaux :</h4>
+                        <ul id="original-ingredients-list" class="results-list"></ul>
+                    </div>
+                    <div class="result-column">
+                        <h4>Quantités recalculées :</h4>
+                        <ul id="recalculated-quantities-list" class="results-list"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="placeholder-card" id="recipe-placeholder">
+                <i class="material-icons">calculate</i>
+                <p>Entrez vos ingrédients et le rendement souhaité pour recalculer votre recette.</p>
+            </div>
         </div>
     </div>
 </section>
 
-        <!-- Outil 3 : orga prod -->
 
-        <section id="outil3" class="tool-content hidden">
-            <div class="main-container">
+        <section id="outil3" class="tool-content hidden fade-in">
+             <div class="tool-card" style="max-width: 800px; margin: auto;">
                 <h1>Planning de production</h1>
-        
-                <div id="planning-options">
-                    <label for="recettes">Sélectionner les recettes :</label>
-                    <select id="recettes" multiple>
-                        </select>
-        
-                    <label for="temps-disponible">Temps disponible (minutes) :</label>
-                    <input type="number" id="temps-disponible" value="480">
-        
-                    <label for="heure-debut">Heure de début :</label>
-                    <input type="time" id="heure-debut" value="00:00">
-        
-                    <button id="generer-planning">Générer le planning</button>
-                </div>
-        
-                <div id="planning-tableau">
-                    </div>
-            </div>
+                <p>En cours de développement...</p>
+             </div>
         </section>
 
-
-         <!-- Outil 4 : calcul de cout de revient -->   
-
-        
-         <section id="outil4" class="tool-content hidden">
-            <div class="main-container">
-                <div class="container">
-                    <h1>Calcul du coût de recette</h1>
-                    <div id="ingredients-input">
-                        <h2>Ingrédients</h2>
-                        <div class="ingredient-row">
-                            <input type="text" class="ingredient-name" placeholder="Nom de l'ingrédient">
-                            <input type="number" class="ingredient-quantity" placeholder="Quantité (g)" value="0">
-                            <input type="number" class="ingredient-price" placeholder="Prix au kg (€)" value="0">
-                            <button type="button" class="remove-ingredient">✖</button>
+        <section id="outil4" class="tool-content hidden fade-in">
+            <div class="tool-main-container">
+                <div class="tool-card">
+                    <h2>Ingrédients de la recette</h2>
+                    <div id="ingredients-list">
                         </div>
-                        <button id="add-ingredient" class="add-ingredient-btn">+</button>
-                    </div>
-        
-                    <div id="recipe-details">
-                        <h2>Détails de la recette</h2>
-                        <label for="piece-weight">Poids d'une pièce (g) :</label>
-                        <input type="number" id="piece-weight" value="0">
-                    </div>
-        
-                    <button id="calculate-cost">Calculer le coût</button>
+                    <button type="button" id="add-ingredient-tool4" class="add-ingredient" title="Ajouter un ingrédient"><i class="material-icons">add</i> </button>
                 </div>
-        
-                <div class="result-container">
+                <div class="tool-card">
+                    <h2>Calcul du Coût de Revient</h2>
+                    <div class="form-row">
+                        <label for="piece-weight">Poids par pièce (g):</label>
+                        <input type="number" id="piece-weight" class="form-input" placeholder="Ex: 350">
+                    </div>
+                    <button type="button" id="calculate-cost" class="btn btn-primary">Calculer le Coût</button>
                     <div id="cost-results">
-                        <h2>Résultats</h2>
-                        <p>Poids total de la recette : <span id="total-weight">0</span> g</p>
-                        <p>Coût total de la pâte : <span id="total-cost">0</span> €</p>
+                        <p>Poids total de la pâte : <span id="total-weight">0</span> g</p>
+                        <p>Coût total de la recette : <span id="total-cost">0</span> €</p>
                         <p>Coût par pièce : <span id="piece-cost">0</span> €</p>
                     </div>
                 </div>
             </div>
         </section>
-
-   <!-- Autres outils -->
-
-
-        <section id="outil5" class="tool-content hidden"></section>
-        <section id="outil6" class="tool-content hidden"></section>
+        
+        <section id="outil5" class="tool-content hidden fade-in">
+             <div class="tool-card" style="max-width: 800px; margin: auto;">
+                <h1>Statistiques de vente</h1>
+                <p>En cours de développement...</p>
+             </div>
+        </section>
+        <section id="outil6" class="tool-content hidden fade-in">
+             <div class="tool-card" style="max-width: 800px; margin: auto;">
+                <h1>Gestion du personnel</h1>
+                <p>En cours de développement...</p>
+             </div>
+        </section>
     </main>
 
-    <!-- Scripts -->
-	<script src="script.js"></script>
+<div id="zone-impression-outil1">
+    <div class="fiche-recette">
+        <h1>Fiche Technique d'Hydratation</h1>
+
+        <h2>Paramètres de la Recette</h2>
+        <div id="print-recap-parametres" class="recap-section">
+            </div>
+
+        <h2>Analyse de l'Hydratation</h2>
+        <div class="recap-section">
+            <p><strong>Total Matières Sèches :</strong> <span id="print-total-seches"></span></p>
+            <p><strong>Total Apports en Eau :</strong> <span id="print-total-eau"></span></p>
+            <p class="highlight-result"><strong>Taux d'Hydratation Réel :</strong> <span id="print-taux-hydratation"></span></p>
+        </div>
+
+        <h2>Détail des Apports en Eau</h2>
+        <div id="print-details-liquides" class="resultats-impression">
+            </div>
+
+        <div class="footer-impression">
+            <p>Fiche générée par Bake Smart - L'outil du Maître Boulanger</p>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="ingredients.js"></script>
+    <script src="script.js"></script>  
     <script src="outil1.js"></script>
-	<script src="outil2.js"></script>
-    <script src="outil3.js"></script>
+    <script src="outil2.js"></script>
     <script src="outil4.js"></script>
 
 </body>
