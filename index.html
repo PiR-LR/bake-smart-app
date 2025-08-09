@@ -75,21 +75,32 @@
                     <h2>Matière Grasse Principale</h2>
                     <div class="form-row">
                         <select id="tool1-fat-type" class="calc-input">
-                            <option value="beurre_82">Beurre 82% MG</option>
-                            <option value="mimetic_essentiel">Mimetic Essentiel</option>
-                            <option value="mimetic_primeur">Mimetic Primeur</option>
+                            <option value="">-- Chargement des matières grasses --</option>
                         </select>
                         <input type="number" class="calc-input" id="tool1-fat-weight" placeholder="450">
                     </div>
                 </div>
 
                 <div class="form-section">
-                    <h2>Autres Ingrédients Humides</h2>
-                    <div id="dynamic-ingredients-container">
-                        </div>
-                        <button type="button" id="add-ingredient-tool1" class="add-ingredient" title="Ajouter un ingrédient">
-                        <i class="material-icons">add</i> 
-</button>                </div>
+    <h2>Autres Ingrédients Humides</h2>
+        <div id="dynamic-ingredients-container">
+        </div>
+        <button type="button" id="add-ingredient-tool1" class="add-ingredient" title="Ajouter un ingrédient">
+            <i class="material-icons">add</i> 
+        </button>
+    </div>
+
+    <template id="dynamic-ingredient-template">
+        <div class="dynamic-row">
+            <select class="ingredient-select">
+                <option value="">-- Chargement des ingrédients --</option>
+            </select>
+            <input type="number" class="ingredient-poids" placeholder="Poids (g)">
+            <button class="remove-ingredient-btn" title="Supprimer">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+    </template>
 
             </form>
         </div>
