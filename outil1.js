@@ -1,47 +1,47 @@
 // Fichier : outil1.js (version corrigée et unifiée)
 
+// Importe la fonction fetchIngredients depuis le nouveau module
+import { fetchIngredients } from './supabase-data.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Le code ne s'exécute que si l'outil 1 est présent sur la page
     const tool1 = document.getElementById('outil1');
     if (!tool1) return;
 
-    // --- VARIABLES ET CONSTANTES DE L'OUTIL ---
     window.chartLiquides = null;
     window.chartRatio = null;
 
-    const INGREDIENTS_HYDRATATION = {
-        'eau': 100,
-        'lait_entier': 88,
-        'lait_demi_ecreme': 90,
-        'creme_35': 60,
-        'creme_fraiche_30': 65,
-        'oeuf_entier': 75,
-        'jaune_oeuf': 50,
-        'blanc_oeuf': 88,
-        'beurre_82': 18,
-        'mimetic_essentiel': 22,
-        'mimetic_primeur': 20,
-        'huile': 0,
-        'levain_liquide_100': 50,
-        'poolish_100': 50,
-    };
+    // --- NOUVEAU : ON REMPLACE LA LISTE STATIQUE ---
+    // On déclare une variable pour stocker les ingrédients de la base de données
+    let supabaseIngredients = {};
 
     // --- RÉFÉRENCES AUX ÉLÉMENTS DU DOM ---
     const form = document.getElementById('hydration-form');
     const addIngredientBtn = document.getElementById('add-ingredient-tool1');
     const dynamicContainer = document.getElementById('dynamic-ingredients-container');
     const ingredientTemplate = document.getElementById('dynamic-ingredient-template');
-
-    // Éléments pour les résultats affichés sur la page
     const totalSechesEl = document.getElementById('total-seches-valeur');
     const totalEauEl = document.getElementById('total-eau-valeur');
     const tauxHydratationEl = document.getElementById('taux-hydratation-valeur');
     const detailContainer = document.getElementById('resultats-liquides-detail');
     
-    // On déclare les variables ici pour qu'elles soient accessibles par toutes les fonctions
     let apportsLiquides = []; 
     let totalMatieresSeches = 0;
     let totalLiquides = 0;
+
+    // --- FONCTION POUR REMPLIR LES SELECT AVEC LES DONNÉES DE SUPABASE ---
+    const populateIngredientSelects = (ingredients) => {
+        // Sélectionne tous les éléments <select> qui ont la classe 'ingredient-select'
+        const selects = document.querySelectorAll('.ingredient-select');
+        selects.forEach(select => {
+            select.innerHTML = '<option value="">-- Choisir un ingrédient --</option>';
+            ingredients.forEach(ingredient => {
+                const option = document.createElement('option');
+                option.value = ingredient.cle_js; // Assure-toi que cette clé correspond à ta colonne "cle_js" dans Supabase
+                option.textContent = ingredient.nom_ingredient; // Nom de la colonne dans Supabase
+                select.appendChild(option);
+            });
+        });
+    };
 
     // --- FONCTION DE MISE À JOUR DES GRAPHIQUES ---
     const updateCharts = () => {
@@ -74,12 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FONCTION PRINCIPALE DE CALCUL ET D'AFFICHAGE ---
     const calculateAndDisplay = () => {
-        // Réinitialisation des variables globales de calcul
         totalMatieresSeches = 0;
         totalLiquides = 0;
         apportsLiquides = [];
 
-        // 1. RÉCUPÉRATION DES VALEURS
         const poids = {
             farine: parseFloat(document.getElementById('tool1-farine').value) || 0,
             sel: parseFloat(document.getElementById('tool1-sel').value) || 0,
@@ -94,18 +92,18 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const fat_type_html = document.getElementById('tool1-fat-type').value;
 
-        // 2. CALCULS
         totalMatieresSeches = poids.farine;
 
+        // --- MODIFIE : LA FONCTION addLiquide UTILISE MAINTENANT les pourcentages de Supabase ---
         const addLiquide = (nom, poidsTotalIngredient, cle_js, icone) => {
-            if (poidsTotalIngredient > 0 && INGREDIENTS_HYDRATATION[cle_js] !== undefined) {
-                const apportEnEau = poidsTotalIngredient * (INGREDIENTS_HYDRATATION[cle_js] / 100);
+            const ingredientData = supabaseIngredients.find(ing => ing.cle_js === cle_js);
+            if (poidsTotalIngredient > 0 && ingredientData) {
+                const apportEnEau = poidsTotalIngredient * (ingredientData.eau_pourcent / 100);
                 apportsLiquides.push({ nom, poidsEau: apportEnEau, poidsTotal: poidsTotalIngredient, icone });
                 totalLiquides += apportEnEau;
             }
         };
 
-        // Ajout des liquides
         addLiquide('Eau', poids.eau, 'eau', '💧');
         addLiquide('Lait entier', poids.lait, 'lait_entier', '🥛');
         addLiquide('Oeufs entiers', poids.oeuf, 'oeuf_entier', '🥚');
@@ -133,7 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const tauxHydratationReel = totalMatieresSeches > 0 ? (totalLiquides / totalMatieresSeches) * 100 : 0;
 
-        // 3. AFFICHAGE
         totalSechesEl.textContent = `${(poids.farine + poids.sel + poids.sucre + poids.levure).toFixed(0)} g`;
         totalEauEl.textContent = `${totalLiquides.toFixed(0)} g`;
         tauxHydratationEl.textContent = `${tauxHydratationReel.toFixed(1)} %`;
@@ -156,80 +153,91 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /* ==================================================================== */
-    /*           NOUVELLE FONCTION D'IMPRESSION (ADAPTÉE)                   */
+    /* NOUVELLE FONCTION D'IMPRESSION (ADAPTÉE)                  */
     /* ==================================================================== */
     function imprimerRecette() {
-        // On lit les valeurs ACTUELLES des champs du formulaire
         const farine = document.getElementById('tool1-farine').value || '0';
         const sel = document.getElementById('tool1-sel').value || '0';
         const sucre = document.getElementById('tool1-sucre').value || '0';
         const levure = document.getElementById('tool1-levure').value || '0';
 
-        // On récupère les résultats déjà calculés à l'écran
         const totalSecsAffiche = totalSechesEl.textContent;
         const totalLiquidesAffiche = totalEauEl.textContent;
         const thFinalAffiche = tauxHydratationEl.textContent;
 
-        // On cible les conteneurs dans la fiche d'impression (votre HTML pour l'impression)
         const recapContainer = document.getElementById('print-recap-parametres');
         const detailsLiquidesContainer = document.getElementById('print-details-liquides');
 
-        // On vide les anciens résultats pour éviter les doublons
         recapContainer.innerHTML = '';
         detailsLiquidesContainer.innerHTML = '';
 
-        // On remplit la section "Paramètres de la Recette"
         recapContainer.innerHTML += `<p><span>Poids de farine :</span> <strong>${farine} g</strong></p>`;
         recapContainer.innerHTML += `<p><span>Sel :</span> <strong>${sel} g</strong></p>`;
         recapContainer.innerHTML += `<p><span>Sucre :</span> <strong>${sucre} g</strong></p>`;
         recapContainer.innerHTML += `<p><span>Levure :</span> <strong>${levure} g</strong></p>`;
         
-        // On remplit la section "Détail des Apports en Eau"
-        // On utilise la variable 'apportsLiquides' qui est maintenant à jour et accessible
         apportsLiquides.forEach(ing => {
             if (ing.poidsTotal > 0) {
-                 detailsLiquidesContainer.innerHTML += `<p><span>${ing.nom} (${ing.poidsTotal} g) apporte :</span> <strong>${ing.poidsEau.toFixed(1)} g d'eau</strong></p>`;
+                detailsLiquidesContainer.innerHTML += `<p><span>${ing.nom} (${ing.poidsTotal} g) apporte :</span> <strong>${ing.poidsEau.toFixed(1)} g d'eau</strong></p>`;
             }
         });
 
-        // On remplit les totaux de la fiche d'impression
         document.getElementById('print-total-seches').textContent = totalSecsAffiche;
         document.getElementById('print-total-eau').textContent = totalLiquidesAffiche;
         document.getElementById('print-taux-hydratation').textContent = thFinalAffiche;
 
-        // On lance l'impression
         window.print();
     }
 
 
     /* ==================================================================== */
-    /*          ÉCOUTEURS D'ÉVÉNEMENTS (UNIFIÉS)                           */
+    /* ÉCOUTEURS D'ÉVÉNEMENTS (AJOUT DE LA FONCTION ASYNC)       */
     /* ==================================================================== */
-    form.addEventListener('input', calculateAndDisplay);
-
-    addIngredientBtn.addEventListener('click', () => {
-        const newIngredientRow = ingredientTemplate.content.cloneNode(true);
-        dynamicContainer.appendChild(newIngredientRow);
-        const newInputs = dynamicContainer.lastElementChild.querySelectorAll('input, select');
-        newInputs.forEach(input => input.addEventListener('input', calculateAndDisplay));
-    });
-    
-    dynamicContainer.addEventListener('click', (e) => {
-        if (e.target.classList.contains('remove-ingredient-btn')) {
-            e.target.closest('.dynamic-row').remove();
+    // Fonction asynchrone pour charger les ingrédients et initialiser les événements
+    const initialize = async () => {
+        try {
+            // Récupère les ingrédients de Supabase au début
+            supabaseIngredients = await fetchIngredients();
+            
+            // Remplit les <select> dynamiques avec ces ingrédients
+            populateIngredientSelects(supabaseIngredients);
+            
+            // Met en place tous les écouteurs d'événements
+            form.addEventListener('input', calculateAndDisplay);
+            
+            addIngredientBtn.addEventListener('click', () => {
+                const newIngredientRow = ingredientTemplate.content.cloneNode(true);
+                dynamicContainer.appendChild(newIngredientRow);
+                // Après avoir ajouté la nouvelle ligne, on remplit ses <select>
+                populateIngredientSelects(supabaseIngredients);
+                // Puis on ajoute les écouteurs pour les nouveaux champs
+                newIngredientRow.querySelectorAll('.calc-input, .ingredient-select, .ingredient-poids')
+                                .forEach(input => input.addEventListener('input', calculateAndDisplay));
+            });
+            
+            dynamicContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('remove-ingredient')) {
+                    e.target.closest('.dynamic-row').remove();
+                    calculateAndDisplay();
+                }
+            });
+            
+            const boutonImprimer = document.getElementById('imprimer-recette-outil1'); 
+            if (boutonImprimer) {
+                boutonImprimer.addEventListener('click', imprimerRecette);
+            } else {
+                console.error("Bouton d'impression avec ID 'imprimer-recette-outil1' introuvable.");
+            }
+            
+            // Appel initial pour que tout s'affiche au chargement de la page
             calculateAndDisplay();
-        }
-    });
-    
-    // Écouteur pour le bouton d'impression
-    const boutonImprimer = document.getElementById('imprimer-recette-outil1'); 
-    if (boutonImprimer) {
-        boutonImprimer.addEventListener('click', imprimerRecette);
-    } else {
-        console.error("Bouton d'impression avec ID 'imprimer-recette-outil1' introuvable.");
-    }
-    
-    // Appel initial pour que tout s'affiche au chargement de la page
-    calculateAndDisplay();
 
-}); // <-- FIN DU BLOC addEventListener, CETTE LIGNE EST ESSENTIELLE ET MANQUAIT !
+        } catch (error) {
+            console.error("Erreur lors de l'initialisation de l'outil 1 :", error);
+        }
+    };
+    
+    // On appelle la fonction d'initialisation
+    initialize();
+
+});
