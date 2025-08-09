@@ -128,7 +128,7 @@
         </div>
 <template id="dynamic-ingredient-template">
                 <div class="dynamic-row">
-                    <select class="ingredient-select">
+                                        <select class="ingredient-select">
                         <option value="">-- Chargement des ingrédients --</option>
                     </select>
                     <input type="number" class="ingredient-poids" placeholder="Poids (g)">
@@ -186,8 +186,8 @@
                         <h4>Quantités recalculées :</h4>
                         <ul id="recalculated-quantities-list" class="results-list"></ul>
                     </div>
-                </div>
             </div>
+        </div>
             <div class="placeholder-card" id="recipe-placeholder">
                 <i class="material-icons">calculate</i>
                 <p>Entrez vos ingrédients et le rendement souhaité pour recalculer votre recette.</p>
@@ -208,7 +208,7 @@
                 <div class="tool-card">
                     <h2>Ingrédients de la recette</h2>
                     <div id="ingredients-list">
-                        </div>
+                    </div>
                     <button type="button" id="add-ingredient-tool4" class="add-ingredient" title="Ajouter un ingrédient"><i class="material-icons">add</i> </button>
                 </div>
                 <div class="tool-card">
@@ -263,6 +263,11 @@
 </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="app.js"></script>
+        <script src="app.js"></script>
+        <script src="ingredients.js"></script>
+    <script src="script.js"></script>  
+    <script src="outil1.js"></script>
+    <script src="outil2.js"></script>
+    <script src="outil4.js"></script>
 </body>
 </html>
