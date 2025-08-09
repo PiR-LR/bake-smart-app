@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Organigramme de production</title>
+</head>
+<body>
+    <h1>Organigramme de production</h1>
+
+    {% if tableau_json %}
+        {% load custom_filters %}
+        <script>
+            const tableau = JSON.parse('{{ tableau_json|safe }}');
+            console.log("Tableau :", tableau);
+        </script>
+        <ul>
+            {% for ligne in tableau %}
+                <li>
+                    {{ ligne.recette }} :
+                    {% for etape, nombre_cases in ligne.cases %}
+                        {{ etape }} ({{ nombre_cases|custom_range|length }} cases)
+                    {% endfor %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune donnée à afficher.</p>
+    {% endif %}
+</body>
+</html>

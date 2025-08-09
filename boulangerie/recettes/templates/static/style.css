@@ -1,0 +1,101 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+/* Styles pour le formulaire de planification */
+form {
+    width: 400px;
+    margin-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+input[type="number"], select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Styles pour l'organigramme */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.case-15min {
+    width: 50px; /* Ajustez la largeur selon vos besoins */
+    height: 30px; /* Ajustez la hauteur selon vos besoins */
+    text-align: center;
+}
+
+.case-etape.Autolyse,
+.case-etape.Pétrissage {
+    background-color: #bbdefb; /* Bleu pour autolyse et pétrissage */
+}
+
+.case-etape.Division,
+.case-etape.Façonnage {
+    background-color: #fff9c4; /* Jaune pour division et façonnage */
+}
+
+.case-etape.Cuisson {
+    background-color: #ffcdd2; /* Rouge pour cuisson */
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+
+.case {
+    width: 30px;
+    height: 30px;
+    background-color: lightblue;
+    display: inline-block;
+    margin: 2px;
+}

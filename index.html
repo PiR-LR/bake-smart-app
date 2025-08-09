@@ -46,7 +46,7 @@
 
     <main id="content">
 
-<section id="outil1" class="tool-content hidden">
+<section id="outil1" class="tool-content hidden fade-in">
     <div class="tool-layout">
         <div class="tool-card">
             <h1>Calculateur d'Hydratation Avancé</h1>
@@ -75,32 +75,21 @@
                     <h2>Matière Grasse Principale</h2>
                     <div class="form-row">
                         <select id="tool1-fat-type" class="calc-input">
-                            <option value="">-- Chargement des matières grasses --</option>
+                            <option value="beurre_82">Beurre 82% MG</option>
+                            <option value="mimetic_essentiel">Mimetic Essentiel</option>
+                            <option value="mimetic_primeur">Mimetic Primeur</option>
                         </select>
                         <input type="number" class="calc-input" id="tool1-fat-weight" placeholder="450">
                     </div>
                 </div>
 
                 <div class="form-section">
-    <h2>Autres Ingrédients Humides</h2>
-        <div id="dynamic-ingredients-container">
-        </div>
-        <button type="button" id="add-ingredient-tool1" class="add-ingredient" title="Ajouter un ingrédient">
-            <i class="material-icons">add</i> 
-        </button>
-    </div>
-
-    <template id="dynamic-ingredient-template">
-        <div class="dynamic-row">
-            <select class="ingredient-select">
-                <option value="">-- Chargement des ingrédients --</option>
-            </select>
-            <input type="number" class="ingredient-poids" placeholder="Poids (g)">
-            <button class="remove-ingredient-btn" title="Supprimer">
-                <i class="material-icons">close</i>
-            </button>
-        </div>
-    </template>
+                    <h2>Autres Ingrédients Humides</h2>
+                    <div id="dynamic-ingredients-container">
+                        </div>
+                        <button type="button" id="add-ingredient-tool1" class="add-ingredient" title="Ajouter un ingrédient">
+                        <i class="material-icons">add</i> 
+</button>                </div>
 
             </form>
         </div>
@@ -159,7 +148,7 @@
 </section>
 
 
-<section id="outil2" class="tool-content hidden">
+<section id="outil2" class="tool-content hidden fade-in">
     <div class="tool-layout"> 
         <div class="tool-card"> 
             <div class="tool-header" style="text-align: center; margin-bottom: 20px;">
@@ -254,28 +243,92 @@
         </section>
 
         <section id="outil4" class="tool-content hidden fade-in">
-            <div class="tool-main-container">
-                <div class="tool-card">
-                    <h2>Ingrédients de la recette</h2>
-                    <div id="ingredients-list">
-                        </div>
-                    <button type="button" id="add-ingredient-tool4" class="add-ingredient" title="Ajouter un ingrédient"><i class="material-icons">add</i> </button>
+    <div class="tool-main-container">
+        <div class="tool-card">
+            <h2>Ingrédients de la recette</h2>
+            <div id="ingredients-list">
+                <div class="ingredient-row" id="row-flour">
+                    <input type="text" class="form-input ingredient-name" placeholder="Nom ingrédient" value="Farine" readonly>
+                    <input type="number" class="form-input ingredient-weight" placeholder="Poids (g)" value="1000">
+                    <input type="number" class="form-input ingredient-price" placeholder="Prix (€/kg)" value="1.20">
+                    </div>
+                <div class="ingredient-row" id="row-water">
+                    <input type="text" class="form-input ingredient-name" placeholder="Nom ingrédient" value="Eau" readonly>
+                    <input type="number" class="form-input ingredient-weight" placeholder="Poids (g)" value="600">
+                    <input type="number" class="form-input ingredient-price" placeholder="Prix (€/kg)" value="0.003">
                 </div>
-                <div class="tool-card">
-                    <h2>Calcul du Coût de Revient</h2>
-                    <div class="form-row">
-                        <label for="piece-weight">Poids par pièce (g):</label>
-                        <input type="number" id="piece-weight" class="form-input" placeholder="Ex: 350">
-                    </div>
-                    <button type="button" id="calculate-cost" class="btn btn-primary">Calculer le Coût</button>
-                    <div id="cost-results">
-                        <p>Poids total de la pâte : <span id="total-weight">0</span> g</p>
-                        <p>Coût total de la recette : <span id="total-cost">0</span> €</p>
-                        <p>Coût par pièce : <span id="piece-cost">0</span> €</p>
-                    </div>
+                <div class="ingredient-row" id="row-salt">
+                    <input type="text" class="form-input ingredient-name" placeholder="Nom ingrédient" value="Sel" readonly>
+                    <input type="number" class="form-input ingredient-weight" placeholder="Poids (g)" value="20">
+                    <input type="number" class="form-input ingredient-price" placeholder="Prix (€/kg)" value="0.50">
+                </div>
+                </div>
+            <button type="button" id="add-ingredient-tool4" class="add-ingredient" title="Ajouter un ingrédient"><i class="material-icons">add</i> </button>
+        </div>
+
+        <div class="tool-card">
+            <h2>Calcul du Coût de Revient et Prix de Vente</h2>
+            <div class="form-row">
+                <label for="piece-weight">Poids par pièce (g):</label>
+                <input type="number" id="piece-weight" class="form-input" placeholder="Ex: 350">
+            </div>
+            <div class="form-row">
+                <label for="cooking-loss-percentage">Perte de cuisson (%):</label>
+                <input type="number" id="cooking-loss-percentage" class="form-input" placeholder="Ex: 10" value="10">
+            </div>
+            <div class="form-row">
+             <label for="selling-price-ttc-input">Prix de Vente TTC (€) :</label>
+              <input type="number" id="selling-price-ttc-input" class="form-input" placeholder="Ex: 2.50">
+            </div>
+            <div class="form-row">
+                <label>Taux de TVA :</label>
+                <div class="radio-group">
+                    <input type="radio" id="vat-rate-5_5" name="vat-rate" value="5.5" checked>
+                    <label for="vat-rate-5_5" class="vat-button">5.5 %</label>
+                    <input type="radio" id="vat-rate-10" name="vat-rate" value="10">
+                    <label for="vat-rate-10" class="vat-button">10 %</label>
                 </div>
             </div>
-        </section>
+
+
+                    <div id="cost-results">
+                    <h3>Poids des pièces</h3>
+                    <p>Poids pièce crue : <span id="piece-weight-raw">0</span> g</p>
+                    <p>Poids pièce cuite : <span id="piece-weight-cooked">0</span> g</p>
+                    
+                    <hr>
+                    <h3>Coûts</h3>
+                    <p>Coût par kg de pâte : <span id="cost-per-kg">0.00</span> €</p>
+                    <p>Coût par pièce (avant cuisson) : <span id="piece-cost-raw">0.000</span> €</p>
+                    <p>Coût par pièce (après cuisson) : <span id="piece-cost-cooked">0.000</span> €</p>
+                    
+                    <hr>
+                    
+                    <h3>Prix de Vente et Marge</h3>
+                    <p>Prix de Vente TTC (€) : <span id="selling-price-ttc">0.00</span> €</p>
+                    <p>Prix de Vente HT (€) : <span id="selling-price-ht">0.00</span> €</p>
+                    <p>Marge Brute par pièce : <span id="gross-margin-per-piece">0.00 €</span></p>
+                </div>
+                <div class="charts-container">
+                <canvas id="cost-chart"></canvas>
+                </div>
+                <div class="cost-breakdown">
+                    <h3>Détail des coûts par ingrédient</h3>
+                    <table id="cost-table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Ingrédient</th>
+                                <th>Coût par pièce</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+</section>
         
         <section id="outil5" class="tool-content hidden fade-in">
              <div class="tool-card" style="max-width: 800px; margin: auto;">
@@ -318,12 +371,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="ingredients.js"></script>
-    <script src="ingredients.js"></script>
     <script src="script.js"></script>  
     <script src="outil1.js"></script>
     <script src="outil2.js"></script>
     <script src="outil4.js"></script>
-
 
 </body>
 </html>

@@ -247,7 +247,34 @@
         background: #c82333;
     }
 
+    /* Cache les boutons radio par défaut */
+    .radio-group input[type="radio"] {
+        display: none;
+    }
 
+    /* Style l'étiquette pour qu'elle ressemble à un bouton */
+    .vat-button {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: #f0f0f0;
+        transition: background-color 0.3s, border-color 0.3s;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    /* Style de l'étiquette au survol */
+    .vat-button:hover {
+        background-color: #e0e0e0;
+    }
+
+    /* Style de l'étiquette lorsque son bouton radio est sélectionné */
+    .radio-group input[type="radio"]:checked + .vat-button {
+        background-color: #6a1b9a; /* La couleur de votre bouton principal */
+        color: #fff;
+        border-color: #6a1b9a;
+    }
 
     /* ==========================================================================
     STYLES POUR L'AFFICHAGE DES RÉSULTATS  <-- COLLEZ LE NOUVEAU BLOC ICI
